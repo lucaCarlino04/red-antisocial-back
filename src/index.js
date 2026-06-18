@@ -9,7 +9,7 @@ const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const tagRoutes = require("./routes/tag.routes");
-const uploadRoutes = require("./routes/uploadRoutes");
+const uploadRoutes = require("./routes/upload.routes");
 
 connectDatabase();
 

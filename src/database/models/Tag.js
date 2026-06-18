@@ -9,6 +9,9 @@ const tagSchema = new mongoose.Schema({
         trim: true,
         unique: true
     }
+}, {
+    timestamps: false,
+    versionKey: false
 })
 
 module.exports = mongoose.model("Tag", tagSchema);

@@ -20,9 +20,10 @@ const postSchema = new mongoose.Schema({
     images: [String]
 }, {
     timestamps: {
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
-    }
+        createdAt: 'fechaPublicacion',
+        updatedAt: false
+    },
+    versionKey: false
 })
 
 module.exports = mongoose.model("Post", postSchema);

@@ -19,13 +19,17 @@ const commentSchema = new mongoose.Schema({
     required: true
   }
 }, {
-  timestamps: true
+  timestamps: {
+    createdAt: "fechaPublicacion",
+    updatedAt: false
+  },
+  versionKey: false
 });
 
 commentSchema.virtual("isVisible").get(function () {
   const months = parseInt(process.env.COMMENT_VISIBILITY_MONTHS) || 6;
   const ms = months * 30.44 * 24 * 60 * 60 * 1000;
-  return this.createdAt > new Date(Date.now() - ms);
+  return this.fechaPublicacion > new Date(Date.now() - ms);
 });
 
 commentSchema.set("toJSON", { virtuals: true });
