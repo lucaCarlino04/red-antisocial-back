@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "init": "node src/database/init.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gerardo Gonzalez Tulian",
