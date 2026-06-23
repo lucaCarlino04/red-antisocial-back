@@ -4,6 +4,11 @@ const connectDatabase = require("./database/connection");
 const config = require("./config/env");
 const errorHandler = require("./middleware/errorHandler");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDoc = YAML.load("./swagger.yaml");
+
+
 
 const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
@@ -14,6 +19,8 @@ const uploadRoutes = require("./routes/upload.routes");
 connectDatabase();
 
 app.use(express.json());
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use("/archivos", express.static(path.resolve(__dirname, "uploads")));
 
