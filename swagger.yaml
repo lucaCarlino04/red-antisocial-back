@@ -1,0 +1,649 @@
+openapi: 3.0.0
+info:
+  title: UnaHur Anti-Social Net API
+  description: API REST para la red anti-social de UnaHur. Administra usuarios, publicaciones, comentarios y etiquetas.
+  version: 1.0.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Usuarios
+  - name: Publicaciones
+  - name: Comentarios
+  - name: Etiquetas
+  - name: Archivos
+
+paths:
+  ####################### USUARIOS #######################
+
+  /usuarios:    #ruta
+    get:        #métido http
+      summary: Listar todos los usuarios    #descripción corta
+      tags: [Usuarios]                      #categoria donde se muestra el endpoint en la interfaz de swagger
+      responses:                            #posibles retornos
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"  #referencia a un schema definido en componentes
+
+    post:
+      summary: Crear un usuario
+      tags: [Usuarios]
+      requestBody:      #cuando el endpoint recibe datos en el body, se describe con requestBody
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioInput"
+            ejemplo:
+              nickName: "pepito"  #ejemplo que aparece en la interfaz de swagger
+      responses:
+        "201":
+          description: Usuario creado
+        "400":
+          description: Error de validación
+        "409":
+          description: El nickName ya existe
+
+  /usuarios/{nickName}:
+    get:
+      summary: Obtener un usuario por nickName
+      tags: [Usuarios]
+      parameters:
+        - $ref: "#/components/parameters/nickName"
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+        "404":
+          description: Usuario no encontrado
+
+    put:
+      summary: Actualizar un usuario
+      tags: [Usuarios]
+      parameters:
+        - $ref: "#/components/parameters/nickName"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioInput"
+      responses:
+        "200":
+          description: Usuario actualizado
+        "404":
+          description: Usuario no encontrado
+
+    delete:
+      summary: Eliminar un usuario
+      tags: [Usuarios]
+      parameters:
+        - $ref: "#/components/parameters/nickName"
+      responses:
+        "200":
+          description: Usuario eliminado
+        "404":
+          description: Usuario no encontrado
+
+  /usuarios/{nickName}/seguir:
+    post:
+      summary: Seguir a un usuario
+      tags: [Usuarios]
+      parameters:
+        - $ref: "#/components/parameters/nickName"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              followerNickName: "pepita"
+      responses:
+        "200":
+          description: Ahora seguís a ese usuario
+        "400":
+          description: Ya lo seguís o intentás seguirte a vos mismo
+        "404":
+          description: Usuario no encontrado
+
+  /usuarios/{nickName}/dejar-de-seguir:
+    post:
+      summary: Dejar de seguir a un usuario
+      tags: [Usuarios]
+      parameters:
+        - $ref: "#/components/parameters/nickName"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              followerNickName: "mariana"
+      responses:
+        "200":
+          description: Dejaste de seguir a ese usuario
+        "400":
+          description: No lo seguías
+        "404":
+          description: Usuario no encontrado
+
+  ####################### PUBLICACIONES #######################
+
+  /publicaciones:
+    get:
+      summary: Listar todas las publicaciones
+      tags: [Publicaciones]
+      responses:
+        "200":
+          description: Lista de publicaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+
+    post:
+      summary: Crear una publicación
+      tags: [Publicaciones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+            ejemplo:
+              description: "Mi primera publicación en la red anti-social"
+              user: "64a1b2c3d4e5f6a7b8c9d0e1"
+      responses:
+        "201":
+          description: Publicación creada
+        "400":
+          description: Error de validación
+        "404":
+          description: Usuario no encontrado
+
+  /publicaciones/{id}:
+    get:
+      summary: Obtener una publicación por ID
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Publicación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Publicación no encontrada
+
+    put:
+      summary: Actualizar una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "200":
+          description: Publicación actualizada
+        "404":
+          description: Publicación no encontrada
+
+    delete:
+      summary: Eliminar una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Publicación eliminada
+        "404":
+          description: Publicación no encontrada
+
+  ####################### IMAGENES #######################
+  /publicaciones/{id}/imagenes:
+    put:
+      summary: Agregar imágenes a una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              images:
+                [
+                  "https://ejemplo.com/foto1.png",
+                  "https://ejemplo.com/foto2.png",
+                ]
+      responses:
+        "200":
+          description: Imágenes agregadas
+        "404":
+          description: Publicación no encontrada
+
+    delete:
+      summary: Eliminar imágenes de una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              images: ["https://ejemplo.com/foto1.png"]
+      responses:
+        "200":
+          description: Imágenes eliminadas
+        "404":
+          description: Publicación no encontrada
+
+  ####################### ETIQUETAS #######################
+  /publicaciones/{id}/etiquetas:
+    put:
+      summary: Agregar etiquetas a una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              tags: ["64a1b2c3d4e5f6a7b8c9d0e1"]
+      responses:
+        "200":
+          description: Etiquetas agregadas
+        "404":
+          description: Publicación no encontrada
+
+    delete:
+      summary: Eliminar etiquetas de una publicación
+      tags: [Publicaciones]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            ejemplo:
+              tags: ["64a1b2c3d4e5f6a7b8c9d0e1"]
+      responses:
+        "200":
+          description: Etiquetas eliminadas
+        "404":
+          description: Publicación no encontrada
+
+  ####################### COMENTARIOS #######################
+
+  /comentarios:
+    get:
+      summary: Listar todos los comentarios (sin filtro de visibilidad)
+      tags: [Comentarios]
+      responses:
+        "200":
+          description: Lista de comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comentario"
+
+    post:
+      summary: Crear un comentario
+      tags: [Comentarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComentarioInput"
+            ejemplo:
+              text: "Gran publicación!"
+              user: "64a1b2c3d4e5f6a7b8c9d0e1"
+              post: "64a1b2c3d4e5f6a7b8c9d0e2"
+      responses:
+        "201":
+          description: Comentario creado
+        "400":
+          description: Error de validación
+        "404":
+          description: Usuario o publicación no encontrada
+
+  /comentarios/{id}:
+    get:
+      summary: Obtener un comentario por ID
+      tags: [Comentarios]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Comentario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comentario"
+        "404":
+          description: Comentario no encontrado
+
+    put:
+      summary: Actualizar un comentario
+      tags: [Comentarios]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComentarioInput"
+      responses:
+        "200":
+          description: Comentario actualizado
+        "404":
+          description: Comentario no encontrado
+
+    delete:
+      summary: Eliminar un comentario
+      tags: [Comentarios]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Comentario eliminado
+        "404":
+          description: Comentario no encontrado
+
+  /comentarios/publicacion/{postId}:
+    get:
+      summary: Listar comentarios de una publicación (filtra los más viejos a 6 meses)
+      tags: [Comentarios]
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la publicación
+      responses:
+        "200":
+          description: Comentarios visibles de la publicación
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comentario"
+        "404":
+          description: Publicación no encontrada
+
+  ####################### ETIQUETAS #######################
+
+  /etiquetas:
+    get:
+      summary: Listar todas las etiquetas
+      tags: [Etiquetas]
+      responses:
+        "200":
+          description: Lista de etiquetas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+    post:
+      summary: Crear una etiqueta
+      tags: [Etiquetas]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagInput"
+            ejemplo:
+              description: "nodejs"
+      responses:
+        "201":
+          description: Etiqueta creada
+        "400":
+          description: Error de validación
+        "409":
+          description: La etiqueta ya existe
+
+  /etiquetas/{id}:
+    get:
+      summary: Obtener una etiqueta por ID
+      tags: [Etiquetas]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Etiqueta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        "404":
+          description: Etiqueta no encontrada
+
+    put:
+      summary: Actualizar una etiqueta
+      tags: [Etiquetas]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TagInput"
+      responses:
+        "200":
+          description: Etiqueta actualizada
+        "404":
+          description: Etiqueta no encontrada
+
+    delete:
+      summary: Eliminar una etiqueta
+      tags: [Etiquetas]
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: Etiqueta eliminada
+        "404":
+          description: Etiqueta no encontrada
+
+  ####################### ARCHIVOS #######################
+
+  /archivos:
+    post:
+      summary: Subir una imagen al servidor
+      tags: [Archivos]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Imagen subida correctamente
+          content:
+            application/json:
+              ejemplo:
+                message: "Imagen subida correctamente"
+                url: "/archivos/imagen-1234567890.png"
+        "400":
+          description: No se envió ninguna imagen
+
+  /archivos/{filename}:
+    delete:
+      summary: Eliminar una imagen del servidor
+      tags: [Archivos]
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Nombre del archivo a eliminar
+      responses:
+        "200":
+          description: Imagen eliminada del servidor
+        "404":
+          description: La imagen no existe
+
+################## COMPONENTES #################
+
+components:
+  parameters:
+    id:
+      name: id    #nombre del parámetro
+      in: path    #viene en la url(/usuarios/{id})
+      required: true
+      schema:
+        type: string
+      description: ID del documento (ObjectId de MongoDB)
+
+    nickName:
+      name: nickName
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Nombre de usuario único
+
+  #Se crean 2 schemas (moldes), uno para lo que manda el cliente y otro para lo que devuelve la api.
+  # Esto es porque el cliente no manda el _id, pero la api si lo devuelve.
+
+  schemas:
+    UsuarioInput:       #lo que manda el cliente para crear un usuario (sin el _id)
+      type: object      #el tipo de dato es un objeto json
+      required: [nickName]    #campos obligatorios
+      properties:             #atributos del objeto
+        nickName:
+          type: string
+          minLength: 3
+          maxLength: 30
+          ejemplo: "pepito"
+
+    Usuario:    #lo que devuelve la api cuando el cliente pide un usuario (con el _id)
+      allOf:    #"allOf" hereda de usuarioImput y crea campos, permitiendo combinar varios esquemas en uno solo
+        - $ref: "#/components/schemas/UsuarioInput"
+        - type: object
+          properties:
+            _id:
+              type: string
+              ejemplo: "64a1b2c3d4e5f6a7b8c9d0e1"
+            followers:      #lista de seguidores del usuario
+              type: array   #define el tipo de cada elemento del array
+              items:
+                type: string
+            following:      #lista de seguidos del usuarios 
+              type: array
+              items:
+                type: string
+
+    PostInput:
+      type: object
+      required: [description, user]
+      properties:
+        description:
+          type: string
+          minLength: 5
+          maxLength: 500
+          ejemplo: "Mi primera publicación"
+        user:
+          type: string
+          ejemplo: "64a1b2c3d4e5f6a7b8c9d0e1"
+        tags:
+          type: array
+          items:
+            type: string
+        images:
+          type: array
+          items:
+            type: string
+
+    Post:
+      allOf:
+        - $ref: "#/components/schemas/PostInput"
+        - type: object
+          properties:
+            _id:
+              type: string
+            fechaPublicacion:
+              type: string
+              format: date-time
+
+    ComentarioInput:
+      type: object
+      required: [text, user, post]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+          ejemplo: "Gran publicación!"
+        user:
+          type: string
+          ejemplo: "64a1b2c3d4e5f6a7b8c9d0e1"
+        post:
+          type: string
+          ejemplo: "64a1b2c3d4e5f6a7b8c9d0e2"
+
+    Comentario:
+      allOf:
+        - $ref: "#/components/schemas/ComentarioInput"
+        - type: object
+          properties:
+            _id:
+              type: string
+            fechaPublicacion:
+              type: string
+              format: date-time
+            isVisible:
+              type: boolean
+
+    TagInput:
+      type: object
+      required: [description]
+      properties:
+        description:
+          type: string
+          minLength: 2
+          maxLength: 20
+          ejemplo: "nodejs"
+
+    Tag:
+      allOf:
+        - $ref: "#/components/schemas/TagInput"
+        - type: object
+          properties:
+            _id:
+              type: string
