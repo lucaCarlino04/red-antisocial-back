@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const router = Router();
 const controller = require("../controllers/post.controller");
+const upload = require("../middleware/upload");
+
+router.post("/", upload.array("images"), controller.create);
+router.put("/:id/imagenes", upload.array("images"), controller.addImages);
 
 router.post("/", controller.create);
 router.get("/", controller.list);

@@ -1,7 +1,6 @@
 const Comment = require("../database/models/Comentario");
 const Post = require("../database/models/Post");
 const User = require("../database/models/User");
-const config = require("../config/env")
 
 async function create(data) {
   const user = await User.findById(data.user);
@@ -16,7 +15,11 @@ async function create(data) {
     err.status = 404;
     throw err;
   }
-  return await Comment.create(data);
+
+  const newComment = await Comment.create(data);
+  post.comments.push(newComment._id);
+  await post.save();
+  return newComment;
 }
 
 async function list() {
@@ -54,11 +57,7 @@ async function remove(id) {
 }
 
 async function listByPost(postId) {
-  const meses = config.commentVisibilityMonths;
-  const fechaLimite = new Date(Date.now() - meses * 30.44 * 24 * 60 * 60 * 1000);
-  return await Comment.find({ post: postId, fechaPublicacion: { $gte: fechaLimite } })
-  .populate("user", "nickName"); //$gte es un operador de mongo: "greater than or equal"
-  /*Se podría filtrar por el atributo isVisible pero es menos eficiente ya que trae comentarios que luego se descartan.*/
+  return await Comment.find({ post: postId }).populate("user", "nickName");
 }
 
 module.exports = { create, list, getById, update, remove, listByPost };

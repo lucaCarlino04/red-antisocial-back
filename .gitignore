@@ -1,4 +1,4 @@
 node_modules
-src/uploads
 mongo_data
 .env
+.vscode/

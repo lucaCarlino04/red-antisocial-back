@@ -2,7 +2,8 @@ const postService = require("../services/postService");
 
 async function create(req, res, next) {
   try {
-    const post = await postService.create(req.body);
+    const imageUrls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    const post = await postService.create({...req.body, images: imageUrls});
     res.status(201).json(post);
   } catch (err) {
     next(err);
@@ -47,7 +48,8 @@ async function remove(req, res, next) {
 
 async function addImages(req, res, next) {
   try {
-    const post = await postService.addImages(req.params.id, req.body.urls);
+    const imageUrls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    const post = await postService.addImages(req.params.id, imageUrls);
     res.json(post);
   } catch (err) {
     next(err);
