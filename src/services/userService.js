@@ -74,7 +74,7 @@ async function follow(nickFollower, nickFollowed) {
   }
 
   if (follower.following.includes(followed._id)) {
-    const err = new Error("Ya sigues a este usuario");
+    const err = new Error(`${nickFollower} ya sigue a ${nickFollowed}`);
     err.status = 400;
     throw err;
   }
@@ -82,7 +82,7 @@ async function follow(nickFollower, nickFollowed) {
   await User.findByIdAndUpdate(follower._id, { $push: { following: followed._id } });
   await User.findByIdAndUpdate(followed._id, { $push: { followers: follower._id } });
 
-  return { message: `Ahora sigues a ${nickFollowed}` };
+  return { message: `Ahora ${nickFollower} sigue a ${nickFollowed}` };
 }
 
 async function unfollow(nickFollower, nickFollowed) {
@@ -100,10 +100,16 @@ async function unfollow(nickFollower, nickFollowed) {
     throw err;
   }
 
+  if (!follower.following.includes(followed._id)) {
+    const err = new Error(`${nickFollower} no sigue a ${nickFollowed}`);
+    err.status = 400;
+    throw err;
+  }
+
   await User.findByIdAndUpdate(follower._id, { $pull: { following: followed._id } });
   await User.findByIdAndUpdate(followed._id, { $pull: { followers: follower._id } });
 
-  return { message: `Has dejado de seguir a ${nickFollowed}` };
+  return { message: `${nickFollower} ha dejado de seguir a ${nickFollowed}` };
 }
 
 module.exports = { create, list, getByNick, update, remove, follow, unfollow };
