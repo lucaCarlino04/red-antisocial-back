@@ -1,6 +1,8 @@
 const Post = require("../database/models/Post");
 const User = require("../database/models/User");
 const Tag = require("../database/models/Tag");
+const redisClient = require("../redis");
+const TTL = Number(process.env.CACHE_TTL_SEGUNDOS ?? 500);
 
 async function create(data) {
   const user = await User.findById(data.user);
@@ -22,7 +24,9 @@ async function create(data) {
   return await Post.create(data);
 }
 async function list() {
-  return await Post.find().populate("user", "nickName").populate("tags", "description");
+  const posts = await Post.find().populate("user", "nickName").populate("tags", "description");
+  // await redisClient.set(JSON.stringify(posts), {EX: TTL});
+  return posts;
 }
 
 async function getById(id) {
@@ -32,6 +36,9 @@ async function getById(id) {
     err.status = 404;
     throw err;
   }
+
+  await redisClient.set(id, JSON.stringify(post), {EX: TTL});
+  console.log("Dato añadido al cache");
   return post;
 }
 
