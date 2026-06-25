@@ -72,3 +72,43 @@ Los sponsors definieron los siguientes nombres y descripciones para las entidade
 - Hace el upload de las imganes que se asocian a un POST que lo guarden en una carpeta de imagenes dentro del servidor web.
 - ¿Cómo modelarías que un usuario pueda "seguir" a otros usuarios, y a su vez ser seguido por muchos? Followers
 - Con la información de los post no varia muy seguido que estrategias podrian utilizar la que la información no sea constantemente consultada desde la base de datos.
+
+# Instalación
+
+## Requisitos previos
+
+- Node 11 o superior
+- Docker y Docker compose
+
+## Variables de entorno
+
+El `.env`, el cual hay que crearlo, debe tener las siguientes variables disponibles:
+
+| Variable             | Ejemplo                  | Descripción                                       |
+| -------------------- | ------------------------ | ------------------------------------------------- |
+| `PORT`               | `3000`                   | Puerto donde escucha la app.                      |
+| `MONGO_ROOT_USERNAME`| `mi-mongo-name`                  | Nombre del usuario de cliente.                    |
+| `MONGO_ROOT_PASSWORD`| `mi-mongo-pws`               | Contraseña del cliente.                           |
+| `MONGO_URI`          | `mongodb://admin:admin123@localhost:27017/redantisocial?authSource=admin`    | Direccion del cliente.                           |
+| `ME_USERNAME`        | `mi-username`                  |                                                   |
+| `ME_PASSWORD`        | `mi-password`               |                                                   |
+| `REDIS_URL`          | `redis://localhost:6379` | URL de conexión a Redis.                          |
+| `REDIS_PASSWORD`     | `mi-redis-pws`               | Contraseña de Redis.                              |
+| `CACHE_TTL_SEGUNDOS` | `60`                     | Segundos que vive cada clave en la caché (TTL).   |
+
+
+## Puesta en marcha
+
+- Primero, hay que establecer las variables de entorno en un archivo `.env`.
+
+```bash
+# 1. instalar dependencias
+npm install
+
+# 2. Levantar los servicios
+docker compose up -d
+
+# 3. Arrancar la app con recarga automática
+npm run dev
+
+```
