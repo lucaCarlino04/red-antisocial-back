@@ -1,4 +1,4 @@
-const client = require("../redis");
+const client = require("../database/redis");
 
 const checkCache = async (req, res, next) => {
     try {
@@ -13,10 +13,6 @@ const checkCache = async (req, res, next) => {
         next(err);
     }
 };
-
-// const checkAllCache = async (req, res, next) => {
-    
-// }
 
 const deleteCache = async(req, res, next) => {
     try {

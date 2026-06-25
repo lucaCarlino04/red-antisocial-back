@@ -1,7 +1,7 @@
 const Post = require("../database/models/Post");
 const User = require("../database/models/User");
 const Tag = require("../database/models/Tag");
-const redisClient = require("../redis");
+const redisClient = require("../database/redis");
 const TTL = Number(process.env.CACHE_TTL_SEGUNDOS ?? 500);
 
 async function create(data) {
