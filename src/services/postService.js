@@ -4,20 +4,23 @@ const Tag = require("../database/models/Tag");
 
 async function create(data) {
   const user = await User.findById(data.user);
-  const tag = await Tag.findById(data.tag);
   if (!user) {
     const err = new Error("Usuario no encontrado");
     err.status = 404;
     throw err;
   }
-  if (!tag) {
-    const err = new Error("Tag no encontrado");
-    err.status = 404;
-    throw err;
+
+  if (data.tags) {
+    const tag = await Tag.findById(data.tags);
+    if (!tag) {
+      const err = new Error("Tag no encontrado");
+      err.status = 404;
+      throw err;
+    }
   }
+
   return await Post.create(data);
 }
-
 async function list() {
   return await Post.find().populate("user", "nickName").populate("tags", "description");
 }

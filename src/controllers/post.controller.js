@@ -2,7 +2,10 @@ const postService = require("../services/postService");
 
 async function create(req, res, next) {
   try {
-    const imageUrls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    if (req.body.tags === "") {
+      delete req.body.tags;
+    }
+    const imageUrls = req.files ? req.files.map(file => `/api/archivos/${file.filename}`) : [];
     const post = await postService.create({...req.body, images: imageUrls});
     res.status(201).json(post);
   } catch (err) {
