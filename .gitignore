@@ -2,3 +2,5 @@ node_modules
 mongo_data
 .env
 .vscode/
+src/uploads/
+!src/uploads/.gitkeep

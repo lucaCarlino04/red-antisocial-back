@@ -22,8 +22,8 @@ app.use(express.json());
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
-app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
-app.use("/archivos", express.static(path.resolve(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
+app.use("/api/archivos", express.static(path.resolve(__dirname, "../uploads")));
 
 app.get("/", (req, res) => {
   res.json({ message: "UnaHur Anti-Social Net API" });
