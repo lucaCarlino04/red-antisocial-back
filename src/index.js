@@ -14,10 +14,13 @@ const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const tagRoutes = require("./routes/tag.routes");
 const uploadRoutes = require("./routes/upload.routes");
+const cors = require("cors");
+
 
 connectDatabase();
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
