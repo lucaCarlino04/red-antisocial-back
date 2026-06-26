@@ -108,7 +108,10 @@ npm install
 # 2. Levantar los servicios
 docker compose up -d
 
-# 3. Arrancar la app con recarga automática
+# 3. Correr las colecciones de prueba
+npm run seed
+
+# 4. Arrancar la app con recarga automática
 npm run dev
 
 ```

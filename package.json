@@ -4,6 +4,7 @@
   "description": "UnaHur anti-social net - Trabajo Práctico",
   "main": "index.js",
   "scripts": {
+    "seed": "node src/database/init.js",
     "start": "node src/index.js",
     "dev": "nodemon --ext js,json,yaml,mjs,cjs src/index.js",
     "init": "node src/database/init.js",
