@@ -17,8 +17,8 @@ async function create(data) {
   }
 
   const newComment = await Comment.create(data);
-  post.comments.push(newComment._id);
-  await post.save();
+  // post.comments.push(newComment._id);
+  // await post.save();
   return newComment;
 }
 
@@ -57,7 +57,8 @@ async function remove(id) {
 }
 
 async function listByPost(postId) {
-  return await Comment.find({ post: postId }).populate("user", "nickName");
+  return await Comment.find({ post: postId }).populate("user", "nickName")
+  .sort({fechaPublicacion: -1});
 }
 
 module.exports = { create, list, getById, update, remove, listByPost };
