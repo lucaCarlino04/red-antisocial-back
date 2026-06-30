@@ -68,14 +68,17 @@ const init = async () => {
   ]);
 
   // -------------------- USERS --------------------
-  const users = await User.insertMany(
-    usersData.map((nickName) => ({
-      nickName,
-      followers: [],
-      following: []
-    }))
-  );
-
+// -------------------- USERS --------------------
+const users = await User.insertMany(
+  usersData.map((nickName) => ({
+    nickName,
+    email: `${nickName}@gmail.com`,
+    password: "12345678", // Luego será hasheada
+    description: `Hola, soy ${nickName}`,
+    followers: [],
+    following: []
+  }))
+);
   // -------------------- FOLLOWERS / FOLLOWING --------------------
   const getRandomUsers = (arr, index, count) => {
     return arr
