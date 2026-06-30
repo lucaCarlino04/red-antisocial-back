@@ -17,14 +17,7 @@ async function create(data) {
     throw err;
   }
 
-<<<<<<< HEAD
-  const newComment = await Comment.create(data);
-  // post.comments.push(newComment._id);
-  // await post.save();
-  return newComment;
-=======
   return await Comment.create(data);
->>>>>>> 7ea6718d8cf50434f0e67c7ebe2cb1c56e3aa151
 }
 
 async function list() {
@@ -65,15 +58,10 @@ async function remove(id) {
 }
 
 async function listByPost(postId) {
-<<<<<<< HEAD
-  return await Comment.find({ post: postId }).populate("user", "nickName")
-  .sort({fechaPublicacion: -1});
-=======
   const meses = config.commentVisibilityMonths;
   const limite = new Date();
   limite.setMonth(limite.getMonth() - meses);
   return await Comment.find({ post: postId, fechaPublicacion: { $gte: limite } }).populate("user", "nickName");
->>>>>>> 7ea6718d8cf50434f0e67c7ebe2cb1c56e3aa151
 }
 
 module.exports = { create, list, getById, update, remove, listByPost };
