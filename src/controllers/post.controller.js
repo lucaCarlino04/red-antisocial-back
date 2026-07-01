@@ -51,7 +51,9 @@ async function remove(req, res, next) {
 
 async function addImages(req, res, next) {
   try {
-    const imageUrls = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
+    const imageUrls = req.files?.length 
+    ? req.files.map(file => `/uploads/${file.filename}`) 
+    : req.body.urls || [];
     const post = await postService.addImages(req.params.id, imageUrls);
     res.json(post);
   } catch (err) {
