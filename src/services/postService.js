@@ -24,7 +24,7 @@ async function create(data) {
   return await Post.create(data);
 }
 async function list() {
-  const posts = await Post.find().populate("user", "nickName").populate("tags", "description");
+  const posts = await Post.find().populate("user", "nickName").populate("tags", "description").sort({fechaPublicacion: -1});
   // await redisClient.set(JSON.stringify(posts), {EX: TTL});
   return posts;
 }
