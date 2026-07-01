@@ -16,8 +16,8 @@ async function create(data) {
     err.status = 404;
     throw err;
   }
-
-  return await Comment.create(data);
+  const comment = Comment.create(data);
+  return await comment.populate("user", "nickName");
 }
 
 async function list() {
