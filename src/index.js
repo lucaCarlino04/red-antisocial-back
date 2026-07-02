@@ -38,9 +38,10 @@ app.use("/api/etiquetas", tagRoutes);
 app.use("/api/archivos", uploadRoutes);
 
 app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("*", (req, res) => {
+app.get("*any", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
+
 
 app.use(errorHandler);
 
