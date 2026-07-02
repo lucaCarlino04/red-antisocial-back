@@ -7,6 +7,5 @@ const config = {
   commentVisibilityMonths: parseInt(process.env.COMMENT_VISIBILITY_MONTHS) || 6
 };
 
-REDIS_URL="rediss://default:gQAAAAAAARhEAAIgcDJiNTk3Zjg5YWNjY2M0N2ZlYWM0MDMxZGU3NDRjZWQ0ZA@rich-deer-71748.upstash.io:6379"
 
 module.exports = config;
