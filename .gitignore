@@ -1,5 +1,6 @@
 node_modules
 mongo_data
+mongo_data/
 .env
 .vscode/
 src/uploads/
