@@ -39,6 +39,11 @@ app.use("/api/archivos", uploadRoutes);
 
 app.use(errorHandler);
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
 const PORT = config.port;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
