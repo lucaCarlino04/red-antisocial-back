@@ -37,12 +37,12 @@ app.use("/api/comentarios", commentRoutes);
 app.use("/api/etiquetas", tagRoutes);
 app.use("/api/archivos", uploadRoutes);
 
-app.use(errorHandler);
-
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
+
+app.use(errorHandler);
 
 const PORT = config.port;
 app.listen(PORT, '0.0.0.0', () => {
