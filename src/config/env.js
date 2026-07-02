@@ -7,5 +7,4 @@ const config = {
   commentVisibilityMonths: parseInt(process.env.COMMENT_VISIBILITY_MONTHS) || 6
 };
 
-
 module.exports = config;

@@ -1,13 +1,24 @@
-// const {createClient} = require("redis");
+const { createClient } = require("redis");
 
-// const redisClient = createClient({
-//     url: process.env.REDIS_URL,
-//     password: process.env.REDIS_PASSWORD
-// });
+const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 
-// redisClient.on("error", err => console.log("Redis Client Error", err));
-// redisClient.on("connect", () => console.log("Conectado a Redis"));
+const redisClient = createClient({
+    url: redisUrl,
+    socket: {
+        reconnectStrategy: (retries) => {
+            if (retries > 3) {
+                console.error("Redis inalcanzable. Continuando sin caché...");
+                return false; // Detiene los reintentos y libera el servidor Express
+            }
+            return 2000; // Reintenta cada 2 segundos
+        }
+    }
+});
 
-// redisClient.connect().catch(err => console.error("error al conectar Redis: ", err));
+redisClient.on("error", err => console.log("Redis Client Log:", err.message));
+redisClient.on("connect", () => console.log("Conectado a Redis con éxito"));
 
-// module.exports = redisClient;
+// 2. Conectamos sin trabar el arranque general del backend
+redisClient.connect().catch(err => console.error("Error inicial al conectar Redis: ", err.message));
+
+module.exports = redisClient;
