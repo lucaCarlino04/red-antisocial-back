@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const connectDatabase = require("./database/connection");
-const redisClient = require('./database/redis');
+// const redisClient = require('./database/redis');
 const config = require("./config/env");
 const errorHandler = require("./middleware/errorHandler");
 const app = express();
