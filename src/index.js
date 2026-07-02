@@ -40,6 +40,6 @@ app.use("/api/archivos", uploadRoutes);
 app.use(errorHandler);
 
 const PORT = config.port;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
