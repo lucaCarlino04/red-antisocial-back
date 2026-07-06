@@ -9,9 +9,9 @@ router.get("/", controller.list);
 router.get("/:id", checkCache, controller.getById);
 router.put("/:id", controller.update);
 router.delete("/:id", deleteCache, controller.remove);
-router.put("/:id/imagenes", upload.array("images"), controller.addImages);
-router.delete("/:id/imagenes", controller.removeImages);
-router.put("/:id/etiquetas", controller.addTags);
-router.delete("/:id/etiquetas", controller.removeTags);
+router.put("/:id/images", upload.array("images"), controller.addImages);
+router.delete("/:id/images", controller.removeImages);
+router.put("/:id/tags", controller.addTags);
+router.delete("/:id/tags", controller.removeTags);
 
 module.exports = router;

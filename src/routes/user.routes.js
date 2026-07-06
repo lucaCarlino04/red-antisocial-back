@@ -7,7 +7,7 @@ router.get("/", controller.list);
 router.get("/:nickName", controller.getByNick);
 router.put("/:nickName", controller.update);
 router.delete("/:nickName", controller.remove);
-router.post("/:nickName/seguir", controller.follow);
-router.post("/:nickName/dejar-de-seguir", controller.unfollow);
+router.post("/:nickName/follow", controller.follow);
+router.post("/:nickName/unfollow", controller.unfollow);
 
 module.exports = router;
