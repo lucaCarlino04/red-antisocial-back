@@ -1,12 +1,13 @@
 const path = require("path");
 const fs = require("fs");
 
-async function uploadImage(req, res, next) {
-  if (!req.file) {
+async function uploadImages(req, res, next) {
+  if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: "No se envió ninguna imagen" });
   }
-  const url = `/archivos/${req.file.filename}`;
-  res.status(201).json({ message: "Imagen subida correctamente", url });
+  const urls = req.files.map((file) => `/archivos/${file.filename}`);
+
+  res.status(201).json({ message: "Imagen subida correctamente", urls });
 }
 
 async function deleteImageFromServer(req, res, next) {
@@ -19,4 +20,4 @@ async function deleteImageFromServer(req, res, next) {
   res.json({ message: "Imagen eliminada del servidor" });
 }
 
-module.exports = { uploadImage, deleteImageFromServer };
+module.exports = { uploadImages, deleteImageFromServer };
