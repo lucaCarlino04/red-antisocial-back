@@ -51,10 +51,21 @@ async function remove(req, res, next) {
 
 async function addImages(req, res, next) {
   try {
-    const imageUrls = req.files?.length 
-    ? req.files.map(file => `/uploads/${file.filename}`) 
-    : req.body.urls || [];
-    const post = await postService.addImages(req.params.id, imageUrls);
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        message: "No se enviaron imágenes."
+      });
+    }
+
+    const imageUrls = req.files.map(
+      (file) => `/api/uploads/${file.filename}`
+    );
+
+    const post = await postService.addImages(
+      req.params.id,
+      imageUrls
+    );
+
     res.json(post);
   } catch (err) {
     next(err);
