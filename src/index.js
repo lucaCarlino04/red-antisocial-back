@@ -13,7 +13,7 @@ const userRoutes = require("./routes/user.routes");
 const postRoutes = require("./routes/post.routes");
 const commentRoutes = require("./routes/comment.routes");
 const tagRoutes = require("./routes/tag.routes");
-const uploadRoutes = require("./routes/upload.routes");
+// const uploadRoutes = require("./routes/upload.routes");
 const cors = require("cors");
 
 
@@ -35,7 +35,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/tags", tagRoutes);
-app.use("/api/uploads", uploadRoutes);
+// app.use("/api/uploads", uploadRoutes);
 
 // app.use(express.static(path.join(__dirname, "../client/build")));
 // app.get("*any", (req, res) => {
