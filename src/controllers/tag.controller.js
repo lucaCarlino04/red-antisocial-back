@@ -1,4 +1,4 @@
-const tagService = require("../services/tagService");
+const tagService = require("../services/tag.service");
 
 async function create(req, res, next) {
   try {
