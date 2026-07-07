@@ -25,7 +25,12 @@ app.use(cors());
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 // app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
-app.use("/api/uploads", express.static(path.resolve(__dirname, "../uploads")));
+console.log(
+  "Ruta uploads:",
+  path.resolve(__dirname, "uploads")
+);
+
+app.use("/api/uploads", express.static(path.resolve(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
   res.json({ message: "UnaHur Anti-Social Net API" });
